@@ -21,7 +21,7 @@ That "state" should contain a list of where the game could go next and whether o
 explore = []
 # This stores which states to look at next
 
-for round in range(30):
+for round in range(60):
 
     for state in explore:
         # Evaluate another case on this round number, marking if it's winning, losing or can be continued
