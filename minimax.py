@@ -1,18 +1,15 @@
 '''
 I didn't want to totally delete calculator.py so I made this
-
 1, 2 and 3 still mean throw duck and reload respectilvely
 '''
 
 import sys 
 
-sys.setrecursionlimit(10**6) 
-
 #make a class that stores a single game state
 class state:
     def __init__(self, snow1, snow2,
                  ducks1, ducks2,
-                 points1, points2, round, prevMove=0):
+                 points1, points2, round, prevMove=0, bestMove=0):
         self.snow1 = snow1
         self.snow2 = snow2
         self.ducks1 = ducks1
@@ -22,20 +19,28 @@ class state:
         self.round = round
         self.prevMove = prevMove
         self.value = None
+        self.bestMove = -1
 
     #checks if two states are equal
-    def isEqual(self, state2):
-        return self.snow1 == state2.snow1 and \
-               self.snow2 == state2.snow2 and \
-               self.ducks1 == state2.ducks1 and \
-               self.ducks2 == state2.ducks2 and \
-               self.points1 == state2.points1 and \
-               self.points2 == state2.points2 and \
-               self.round == state2.round
+    def __eq__(self, state2):
+        try:
+            return self.snow1 == state2.snow1 and \
+                self.snow2 == state2.snow2 and \
+                self.ducks1 == state2.ducks1 and \
+                self.ducks2 == state2.ducks2 and \
+                self.points1 == state2.points1 and \
+                self.points2 == state2.points2 and \
+                self.round == state2.round
+        except:
+            return False
+
+    #puts the variables in a list of consistent formatting
+    def parse(self):
+        return [self.snow1, self.snow2, self.ducks1, self.ducks2, self.points1, self.points2, self.round, self.bestMove]
 
     #returns the possible states the current state can lead to
     def nextStates(self):
-        if self.round < 30:
+        if self.round < 3:
             if self.round%2 == 0:
                 nextStates = []
                 for move1 in [1, 2, 3]:
@@ -104,98 +109,108 @@ class state:
             return [0, 0, 0] #it can only be a tie from here
 
 nodes = 0
+games = [[]]*4
 
 def treeMax(thisState):
     global nodes
     nodes += 1
+    global games
 
-    if nodes%100000 == 0:
-        print(nodes, "evaluated")
+    # if nodes%100000 == 0:
+    print(nodes, "evaluated")
 
     children = thisState.nextStates()
 
+    child1, child2, child3 = 0, 0, 0
+
     if children[0] in [-1, 0, 1]:
-        child1 = [children[0], [], [], [], 0, children[0]]
+        child1 = children[0]
     else:
-        child1 = treeMin(children[0])
+        if children[0] not in games[children[0].round]:
+            child1 = treeMin(children[0])
 
     if children[1] in [-1, 0, 1]:
-        child2 = [children[1], [], [], [], 0, children[1]]
+        child2 = children[1]
     else:
-        child2 = treeMin(children[1])
+        if children[1] not in games[children[1].round]:
+            child2 = treeMin(children[1])
 
     if children[2] in [-1, 0, 1]:
-        child3 = [children[2], [], [], [], 0, children[2]]
+        child3 = children[2]
     else:
-        child3 = treeMin(children[2])
+        if children[2] not in games[children[2].round]:
+            child3 = treeMin(children[2])
 
-    values = [child[-1] for child in [child1, child2, child3]]
+    values = [child1, child2, child3]
     value = max(values)
     bestMove = values.index(value) + 1
 
-    return [child1, child2, child3, bestMove, value]
+    thisState.bestMove = bestMove
+    thisState.value = value
+    games[thisState.round].append(thisState)
+
+    return value
 
 def treeMin(thisState):
     #same but min instead
     global nodes
     nodes += 1
+    global games
 
-    if nodes%100000 == 0:
-        print(nodes, "evaluated")
+    # if nodes%100000 == 0:
+    print(nodes, "evaluated")
 
     children = thisState.nextStates()
 
+    child1, child2, child3 = 0, 0, 0
+
     if children[0] in [-1, 0, 1]:
-        child1 = [children[0], [], [], [], 0, children[0]]
+        child1 = children[0]
     else:
-        child1 = treeMax(children[0])
+        if children[0] not in games[children[0].round]:
+            child1 = treeMax(children[0])
 
     if children[1] in [-1, 0, 1]:
-        child2 = [children[1], [], [], [], 0, children[1]]
+        child2 = children[1]
     else:
-        child2 = treeMax(children[1])
+        if children[1] not in games[children[1].round]:
+            child2 = treeMax(children[1])
 
     if children[2] in [-1, 0, 1]:
-        child3 = [children[2], [], [], [], 0, children[2]]
+        child3 = children[2]
     else:
-        child3 = treeMax(children[2])
+        if children[2] not in games[children[2].round]:
+            child3 = treeMax(children[2])
 
-    values = [child[-1] for child in [child1, child2, child3]]
+    values = [child1, child2, child3]
     value = min(values)
     bestMove = values.index(value) + 1
 
-    return [child1, child2, child3, bestMove, value]
+    thisState.bestMove = bestMove
+    thisState.value = value
+
+    games[thisState.round].append(thisState)
+
+    return value
+
+# children = state(1, 1, 5, 5, 0, 0, 0).nextStates()
+
+# for child in children:
+#     print(child.parse())
+#     grandChildren = child.nextStates()
+#     for grandchild in grandChildren:
+#         print('\t', grandchild.parse())
 
 f = open('tree.txt', 'w')
 
-f.write(str(treeMax(state(1, 1, 5, 5, 0, 0, 0))), buffer=10**10)
+treeMax(state(1, 1, 5, 5, 0, 0, 0))
+
+data = []
+for r in range(0, len(games)):
+    if len(games[r]) > 0 and r%2 == 0:
+
+        data.append([[state.parse()[:-1], state.parse()[-1]] for state in games[r]])
+
+f.write(str(data))
 
 f.close()
-
-# stack = [state(1, 1, 5, 5, 0, 0, 0)] #last in first out stack of things to investigate
-# history = stack[:] #put each state in here so that you can check if new states are unique
-# parents = [] #this will fill up with the whole tree
-# path = []
-
-# r = 0
-# while len(stack) != 0:
-#     current = stack.pop(-1)
-#     if current in [0, 1, -1]:
-#         path[-1].append(current)
-
-#         if stack[-1].round > r:
-#             #evaluate the parent
-#             parent = parents[-1]
-#             if (r-1) % 2 == 0:
-#                 parent[0].bestMove = parent[1:].index(max(parent[1:]))
-#             else:
-#                 parent[0].bestMove = parent[1:].index(min(parent[1:]))
-
-#     else:
-#         r += 1
-#         children = current.nextStates()
-#         path[-1].append(current)
-#         for child in children:
-#             if len(filter(lambda state: state.isEqual(child), history)) == 0:
-#                 stack.append(child)
-#                 history.append(child)
