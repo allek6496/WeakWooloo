@@ -1,1 +1,1 @@
-bulletproof
+'''bulletproof'''

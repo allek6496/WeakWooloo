@@ -10,7 +10,7 @@ does break, we can always just write to a file.
 
 The format of this array is very important. It can be lots of different things, but here's my idea:
 
-Assume a throw is 0, a reload is 1 and a duck is 2 (totally arbitrary).
+Assume a throw is 1, a reload is 2 and a duck is 3 (totally arbitrary, but 0 in each list is the game-state). 
 
 tree[0][1][2][1] should be the state after player 1 threw and player 2 relaoded then 
                                            player 1 ducked and player 2 reloaded
