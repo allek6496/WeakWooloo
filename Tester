@@ -1,0 +1,10 @@
+#Assign strategy names to variables
+##strat1Name = "MiniMax"
+##strat2Name = "AlphaSnow"
+##
+###Import the two strategies
+##strat1 = __import__(strat1Name)
+##strat2 = __import__(strat2Name) 
+'''need for loop for playing the game over and over
+need to make an array that stores the games each person has won
+'''
