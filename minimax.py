@@ -36,11 +36,11 @@ class state:
 
     #puts the variables in a list of consistent formatting
     def parse(self):
-        return [self.snow1, self.snow2, self.ducks1, self.ducks2, self.points1, self.points2, self.round, self.bestMove]
+        return [self.snow1, self.snow2, self.ducks1, self.ducks2, self.points1, self.points2, self.round, self.value, self.bestMove]
 
     #returns the possible states the current state can lead to
     def nextStates(self):
-        if self.round < 3:
+        if self.round < 60:
             if self.round%2 == 0:
                 nextStates = []
                 for move1 in [1, 2, 3]:
@@ -48,7 +48,7 @@ class state:
                     
                     #first player
                     if move1 == 1 and self.snow1 > 0:
-                        #if they threw, they have one less snowball and if the other reloads, one more point
+                        #if they threw, they have one less snowball
                         nextData[0] -= 1
                         nextStates.append(state(*nextData))
                     elif move1 == 1:
@@ -109,37 +109,52 @@ class state:
             return [0, 0, 0] #it can only be a tie from here
 
 nodes = 0
-games = [[]]*4
+games = [[] for i in range(61)]
 
 def treeMax(thisState):
     global nodes
     nodes += 1
     global games
 
-    # if nodes%100000 == 0:
-    print(nodes, "evaluated")
+    if nodes%100000 == 0:
+        print(nodes, "evaluated")
 
     children = thisState.nextStates()
 
-    child1, child2, child3 = 0, 0, 0
+    child1, child2, child3 = None, None, None
 
     if children[0] in [-1, 0, 1]:
         child1 = children[0]
     else:
         if children[0] not in games[children[0].round]:
             child1 = treeMin(children[0])
+        else:
+            for state in games[children[0].round]:
+                if state == children[0]:
+                    child1 = state.value
+                    break
 
     if children[1] in [-1, 0, 1]:
         child2 = children[1]
     else:
         if children[1] not in games[children[1].round]:
             child2 = treeMin(children[1])
+        else:
+            for state in games[children[1].round]:
+                if state == children[1]:
+                    child2 = state.value
+                    break
 
     if children[2] in [-1, 0, 1]:
         child3 = children[2]
     else:
         if children[2] not in games[children[2].round]:
             child3 = treeMin(children[2])
+        else:
+            for state in games[children[2].round]:
+                if state == children[2]:
+                    child3 = state.value
+                    break
 
     values = [child1, child2, child3]
     value = max(values)
@@ -157,30 +172,45 @@ def treeMin(thisState):
     nodes += 1
     global games
 
-    # if nodes%100000 == 0:
-    print(nodes, "evaluated")
+    if nodes%100000 == 0:
+        print(nodes, "evaluated")
 
     children = thisState.nextStates()
 
-    child1, child2, child3 = 0, 0, 0
+    child1, child2, child3 = None, None, None
 
     if children[0] in [-1, 0, 1]:
         child1 = children[0]
     else:
         if children[0] not in games[children[0].round]:
             child1 = treeMax(children[0])
+        else:
+            for state in games[children[0].round]:
+                if state == children[0]:
+                    child1 = state.value
+                    break
 
     if children[1] in [-1, 0, 1]:
         child2 = children[1]
     else:
         if children[1] not in games[children[1].round]:
             child2 = treeMax(children[1])
+        else:
+            for state in games[children[1].round]:
+                if state == children[1]:
+                    child2 = state.value
+                    break
 
     if children[2] in [-1, 0, 1]:
         child3 = children[2]
     else:
         if children[2] not in games[children[2].round]:
             child3 = treeMax(children[2])
+        else:
+            for state in games[children[2].round]:
+                if state == children[2]:
+                    child3 = state.value
+                    break
 
     values = [child1, child2, child3]
     value = min(values)
@@ -209,8 +239,13 @@ data = []
 for r in range(0, len(games)):
     if len(games[r]) > 0 and r%2 == 0:
 
-        data.append([[state.parse()[:-1], state.parse()[-1]] for state in games[r]])
+        data.append([state.parse() for state in games[r]])
 
 f.write(str(data))
 
 f.close()
+
+# children = state(0, 1, 5, 5, 0, 0, 1).nextStates()
+
+# for child in children:
+#     print(child.parse())
