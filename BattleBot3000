@@ -1,0 +1,122 @@
+###########################
+# ICS3UI                  #
+# BattleBot300            #
+# By: Lauren Zhang        #
+#     Sarah Yang          #
+#     Janelle Pretti      #
+###########################
+
+def getMove( myScore, mySnowballs, myDucksUsed, myMovesSoFar,
+                        oppScore, oppSnowballs, oppDucksUsed, oppMovesSoFar ):
+
+    ourNextMove = checkForPattern(myScore, mySnowballs, myDucksUsed, myMovesSoFar, oppScore, oppSnowballs, oppDucksUsed, oppMovesSoFar )
+
+    if ourNextMove == "": #D
+
+        if oppDucksUsed == 0 and oppSnowballs == 0 and mySnowballs > 0:
+            ourNextMove = "THROW" #A
+
+
+        elif mySnowballs == 0:
+            if myDucksUsed == 5:
+                ourNextMove = "RELOAD" #B
+                
+            else:
+
+                if oppSnowballs == 0:
+                    ourNextMove = "RELOAD"
+
+                else:
+                    ourNextMove = "DUCK"
+                
+
+        elif mySnowballs >= 6:
+            
+            ourNextMove = "THROW" #C
+
+        else:
+
+            if mySnowballs > oppSnowballs:
+
+                ourNextMove = "THROW" #E
+
+            elif mySnowballs == oppSnowballs:
+
+                if oppScore == 2 and myDucksUsed < 5 and oppSnowballs > 0: 
+
+                    ourNextMove = "DUCK" #F
+
+                elif oppScore == 2 and myDucksUsed == 5 and mySnowballs > 0: 
+                    
+                    ourNextMove = "THROW" #G
+                    
+                else:
+                    
+                    ourNextMove = "RELOAD" #H
+
+            else:
+
+                if myMovesSoFar[-1] == "DUCK" and myMovesSoFar[-2] == "DUCK":
+
+                    if mySnowballs > 0:
+
+                        ourNextMove = "THROW"
+
+                    else:
+
+                        ourNextMove = "RELOAD"
+
+                elif myDucksUsed != 5:
+                    
+                    ourNextMove = "DUCK" #I
+
+                else:
+
+                    if mySnowballs > 0:
+
+                        ourNextMove = "THROW" #J
+
+                    else:
+
+                        ourNextMove = "RELOAD" #K
+
+        
+    return ourNextMove
+
+        
+def checkForPattern(myScore, mySnowballs, myDucksUsed, myMovesSoFar,
+                        oppScore, oppSnowballs, oppDucksUsed, oppMovesSoFar ):
+
+    ourNextMove = ""
+    
+    if len(myMovesSoFar) <= 4:
+
+        if oppMovesSoFar[-4:] == ["THROW", "RELOAD", "THROW", "RELOAD"]:
+
+            if myDucksUsed < 5:
+                
+                ourNextMove = "DUCK"
+
+            else:
+                
+                if mySnowballs > 0:
+                    
+                    ourNextMove = "THROW"
+
+                else:
+                    ourNextMove = "RELOAD"
+
+        if oppMovesSoFar[-4:] == ["RELOAD", "THROW", "RELOAD", "THROW"]:
+
+            if mySnowballs > 0:
+                ourNextMove = "THROW"
+
+            else:
+                ourNextMove = "RELOAD"
+
+    return ourNextMove
+        
+
+    
+
+
