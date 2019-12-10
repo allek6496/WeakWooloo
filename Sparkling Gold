@@ -1,0 +1,263 @@
+from random import *
+
+def getMove(myScore, mySnowballs, myDucksUsed, myMovesSoFar, oppScore, oppSnowballs, oppDucksUsed, oppMovesSoFar):
+
+#First two rounds, always reload
+    if len(myMovesSoFar) < 2:
+        return "RELOAD"
+
+#After the first 2 rounds...
+    else:
+        if oppScore == 2: #IF THE OPPONENT'S SCORE IS 2 
+            if oppSnowballs == 0: #if the opponent has no snowballs
+
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return "RELOAD"
+
+                elif mySnowballs == 0:
+                    return "RELOAD"
+        
+                else: #if we have 1 or 2 snowballs 
+                    return "THROW"
+
+            elif 3 >= oppSnowballs >= 1: #if the opponent has some snowballs
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5:
+                            return "THROW"
+                        else:
+                            if oppMovesSoFar[-1] == "THROW": #if the opponents last move was a throw
+                                return choice([ "DUCK", "THROW" ])
+
+                            elif oppMovesSoFar[-1] == "DUCK": #if the opponents last move was a duck
+                                return "THROW"
+
+                            else: #if the opponents last move was a reload
+                                return choice([ "DUCK", "THROW" ])
+                            
+                elif mySnowballs == 0:
+                    if myDucksUsed == 5: #if we have used all our ducks 
+                        return "RELOAD"
+                    else:
+                        return choice([ "DUCK", "RELOAD" ])
+        
+                else: #if we have 1 or 2 snowballs 
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5: #if we have used all our ducks 
+                            return "THROW"
+                        else: 
+                            return choice(["DUCK", "THROW"])
+
+            else: #if the opponent has a lot of snowballs - more than 3 
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5: #if we have used all our ducks 
+                            return "THROW"
+                        else:
+                            if oppMovesSoFar[-1] == "THROW" or oppMovesSoFar[-1] == "DUCK": #if the opponent's last move is a throw or duck
+                                return "THROW"
+                            
+                            else: #if the opponent's last move is a reload 
+                                return "DUCK"
+                            
+                elif mySnowballs == 0:
+                    if myDucksUsed == 5: #if we have used all our ducks 
+                        return "RELOAD"
+                    else:
+                        return choice([ "DUCK", "RELOAD" ])
+        
+                else: #if we have 1 or 2 snowballs 
+                    if myDucksUsed == 5: #if we have used all our ducks
+                        return "THROW"
+                    else:
+                        return "DUCK"
+                    
+##############################################################################################################
+                    
+        elif oppScore == 1: #IF THE OPPONENT'S SCORE IS 1 
+            if oppSnowballs == 0: #if the opponent has no snowballs
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return choice(["RELOAD", "THROW"])   
+
+                elif mySnowballs == 0:
+                    return "RELOAD"
+        
+                else: #if we have 1 or 2 snowballs
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return choice(["RELOAD", "THROW"])
+
+            elif 3 >= oppSnowballs >= 1: #if the opponent has some snowballs
+            
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5: #if we used all our ducks 
+                            return "THROW"
+                        else:
+                            if oppMovesSoFar[-1] == "THROW": #if the opponents last move was a throw
+                                return choice([ "RELOAD", "THROW" ])
+
+                            else: #if the opponents last move was a duck or reload 
+                                return  "THROW"
+
+                elif mySnowballs == 0:
+                    if myDucksUsed == 5: #if we used all our ducks 
+                        return "RELOAD"
+                    else:
+                        if oppMovesSoFar[-1] == "THROW" or oppMovesSoFar[-1] == "DUCK": #if the opponents last move was a throw or duck
+                            return "RELOAD"
+                        else: #if the opponents last move was a reload
+                            return "DUCK"
+                        
+    
+                else: #if we have 1 or 2 snowballs 
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return choice(["RELOAD", "THROW"])
+
+            else: #if the opponent has a lot of snowballs - more than 3 
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        if myDucksUsed == 5: #if we used all our ducks 
+                            return "THROW"
+                        else: 
+                            return "DUCK"
+                    else:
+                        if myDucksUsed == 5: #if we used all our ducks
+                            return "THROW"
+                        else:
+                            if oppMovesSoFar[-1] == "THROW" or oppMovesSoFar[-1] == "DUCK": #if the opponents last move was a throw or duck
+                                return "THROW"
+
+                            else: #if the opponents last move was a reload
+                                return "DUCK"   
+
+                elif mySnowballs == 0:
+                    if myDucksUsed == 5: #if we used all our ducks
+                        return "RELOAD"
+                    else:
+                        return choice([ "DUCK", "RELOAD" ])
+        
+                else: #if we have 1 or 2 snowballs 
+                    return "RELOAD"
+
+##############################################################################################################
+
+        else: #IF THE OPPONENT'S SCORE IS 0 
+            if oppSnowballs == 0: #if the opponent has no snowballs 
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return choice(["RELOAD", "THROW"])   
+
+                elif mySnowballs == 0:
+                    return "RELOAD"
+        
+                else: #if we have 1 or 2 snowballs 
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        return choice(["RELOAD", "THROW"])
+
+            elif 3 >= oppSnowballs >= 1: #if the opponent has some snowballs 
+                
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5: #if we have used all our ducks
+                            return choice(["THROW", "RELOAD"])
+                        else:
+                            if oppMovesSoFar[-1] == "THROW": #if the opponents last move was a throw
+                                return choice([ "RELOAD", "THROW" ])
+
+                            elif oppMovesSoFar[-1] == "DUCK": #if the opponents last move was a duck
+                                return choice(["THROW", "RELOAD"])
+
+                            else: #if the opponents last move was a reload
+                                return "THROW"
+                            
+                elif mySnowballs == 0:
+                    return "RELOAD"
+                   
+                else: #if we have 1 or 2 snowballs 
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5:#if we used all our ducks 
+                            return "RELOAD"
+                        else: 
+                            return choice(["DUCK", "RELOAD"])
+
+            else: #if the opponent has a lot of snowballs - more than 3 
+                if mySnowballs == 10:
+                    return "THROW"
+                
+                elif mySnowballs >= 3:
+                    if oppDucksUsed == 5: #if the opponent has used all their ducks 
+                        return "THROW"
+                    else:
+                        if myDucksUsed == 5: #if we used all our ducks 
+                            return "THROW"
+                        else:
+                            if oppMovesSoFar[-1] == "THROW" or oppMovesSoFar[-1] == "DUCK": #if the opponents last move was a throw or duck
+                                return "THROW"
+                            
+                            else: #if the opponents last move was a reload
+                                return choice (["DUCK", "THROW"])
+                        
+                elif mySnowballs == 0:
+                    return "RELOAD"
+        
+                else: #if we have 1 or 2 snowballs 
+                    if myDucksUsed == 5: #if we used all our ducks 
+                        return choice (["THROW", "RELOAD"])
+                    else:
+                        return choice (["DUCK", "RELOAD"])
+            
+
+
+            
+
+    
