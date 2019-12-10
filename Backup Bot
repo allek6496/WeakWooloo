@@ -23,9 +23,7 @@ def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore
       sb = 100
       dp = 0
       rp = 0
-
-  
-    
+   
   if opponentsScore == 2:
     if opponentsSnowballs>0:
       if myDucksUsed==5:
@@ -91,7 +89,7 @@ def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore
           sp = 100
           dp = 0
 
-      elif opponentsDucksUsed<=4:
+      elif opponentsDucksUsed<=4 and myDucksUsed<5:
         if mySnowballs==0:
           rp = 0
           sp = 0
@@ -104,12 +102,21 @@ def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore
           rp = 0
           sp = 100
           dp = 0
+      elif opponentsDucksUsed<=4 and myDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs<0:
+          rp = 0
+          sp = 100
+          dp = 0
 
         
 
       
 
-  move= choice(["RELOAD"]*rp+ ["SHOOT"]*sp +["DUCK"]*dp)
+  move= choice(["RELOAD"]*rp+ ["THROW"]*sp +["DUCK"]*dp)
 
     
   return(move)
