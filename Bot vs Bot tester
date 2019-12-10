@@ -16,13 +16,15 @@ strat2 = __import__(strat2Name)
 duckLimit = 5
 snowballLimit = 10
 roundLimit = 30
-
+w1 = 0
+w2 = 0
+d = 0
 
 def announce( message ):
     print(message)
-
-                    
+                   
 def announceGameResult( cheatingFound1, cheatingFound2, score1, score2, roundNum ):
+global (w1,w2,d)
     summary = ""
 
     if cheatingFound1 == True and cheatingFound2 == True:
@@ -30,30 +32,32 @@ def announceGameResult( cheatingFound1, cheatingFound2, score1, score2, roundNum
         
     elif cheatingFound1 == True:
         summary = strat1Name + " cheated! " +  strat2Name + " wins!"
+        w2=w2+1
         
     elif cheatingFound2 == True:
         summary = strat2Name + " cheated! " +  strat1Name + " wins!"
+        w1=w1+1
         
     elif roundNum >= roundLimit:
         summary = str(roundLimit) + " rounds reached."
 
         if score1 > score2:
             summary = summary + " " + strat1Name + " wins!"
-            
+            w1=w1+1
         elif score2 > score1:
             summary = summary + " " + strat2Name + " wins!"
-            
+            w2=w2+1
         else:
             summary = summary + " Draw!"
-
+            d = d+1
     else:
         if score1 > score2:
             summary = summary + strat1Name + " wins!"
-            
+            w1=w1+1
         elif score2 > score1:
             summary = summary + strat2Name + " wins!"
-
-    announce( summary )
+            w2=w2+1
+##    announce( summary )
 
 
 def game():
@@ -207,18 +211,20 @@ def game():
                 elif throwC2:
                     summary = strat2Name + " missed!"
 
-            print(curMove1, "\t", curMove2)
-            print(summary)
-            print("Score:", score1, score2)
-            print("Snowballs:", snowballs1, snowballs2)
-            print("Ducks left", duckLimit - ducksUsed1, duckLimit - ducksUsed2)
-            print("")         
+##                print(curMove1, "\t", curMove2)
+##                print(summary)
+##                print("Score:", score1, score2)
+##                print("Snowballs:", snowballs1, snowballs2)
+##                print("Ducks left", duckLimit - ducksUsed1, duckLimit - ducksUsed2)
+##                print("")         
             
 
             
     #Once the while-loop stops (by someone winning or cheating, or we reached the round-limit), announce the result   
     announceGameResult( cheatingFound1, cheatingFound2, score1, score2, roundNum )
-
-        
-game()
-            
+    
+for i in range(10):      
+    game()
+print("bot 1 won", w1)
+print("Bot 2 won", w2)
+print("Draw", d1)
