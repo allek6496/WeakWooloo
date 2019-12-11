@@ -87,8 +87,8 @@ def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore
           sp = 0
           dp = 0
         elif mySnowballs<=4:
-          rp = 20
-          sp = 80
+          rp = 10
+          sp = 90
           dp = 0
         elif mySnowballs<=10:
           rp = 0
@@ -118,106 +118,7 @@ def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore
           sp = 100
           dp = 0
 
-#Detecting patterns in Other Programs       
-##    if len(opponentMoveHistory)>=5:
-##      if opponentMoveHistory[-1]==opponentMoveHistory[-2] and opponentMoveHistory[-2]==opponentMoveHistory[-3]:
-##        if opponentMoveHistory[-1]=="RELOAD" and mySnowballs>0:
-##          rp = 0
-##          sp = 100
-##          dp = 0
-##        if opponentMoveHistory[-1]=="THROW" and myDucksUsed<5:
-##          rp = 0
-##          sp = 0
-##          dp = 100    
-##        if opponentMoveHistory[-1]=="DUCK" and mySnowballs<10:
-##          rp = 100
-##          sp = 0
-##          dp = 0
-##          
-##      if opponentMoveHistory[-2]==opponentMoveHistory[-4] and opponentMoveHistory[-1]==opponentMoveHistory[-3]:
-##        if opponentMoveHistory[-2]=="RELOAD" and mySnowballs>0:
-##          rp = 0
-##          sp = 100
-##          dp = 0
-##        if opponentMoveHistory[-2]=="THROW" and myDucksUsed<5:
-##          rp = 0
-##          sp = 0
-##          dp = 100     
-##        if opponentMoveHistory[-2]=="DUCK" and mySnowballs<10 and opponentsScore<2:
-##          rp = 0
-##          sp = 50
-##          dp = 50
-##        elif opponentMoveHistory[-2]=="DUCK" and mySnowballs<10:
-##          rp = 100
-##          sp = 0
-##          dp = 0
-##          
-##      if opponentMoveHistory[-1]!=opponentMoveHistory[-2] and opponentMoveHistory[-1]!=opponentMoveHistory[-3] and opponentMoveHistory[-2]!=opponentMoveHistory[-3]:
-##        if opponentMoveHistory[-3]=="RELOAD" and mySnowballs>0:
-##          rp = 0
-##          sp = 100
-##          dp = 0
-##        if opponentMoveHistory[-3]=="THROW" and myDucksUsed<5:
-##          rp = 0
-##          sp = 0
-##          dp = 100     
-##        if opponentMoveHistory[-3]=="DUCK" and mySnowballs<10:
-##          rp = 100
-##          sp = 0
-##          dp = 0
-##          
-###Checking for patterns in my own bot that other bots can detect and countering them
-##  if len(myMoveHistory)>=5:
-##    if myMoveHistory[-1]==myMoveHistory[-2] and myMoveHistory[-2]==myMoveHistory[-3]:
-##      if myMoveHistory[-1]=="RELOAD" and myDucksUsed<5:
-##        rp = 0
-##        sp = 0
-##        dp = 100
-##      if myMoveHistory[-1]=="THROW" and mySnowballs<10:
-##        rp = 100
-##        sp = 0
-##        dp = 0    
-##      if myMoveHistory[-1]=="DUCK" and mySnowballs>0:
-##        rp = 0
-##        sp = 100
-##        dp = 0
-##        
-##    if myMoveHistory[-2]==myMoveHistory[-4] and myMoveHistory[-1]==myMoveHistory[-3]:
-##      if myMoveHistory[-2]=="RELOAD" and myDucksUsed<5:
-##        rp = 0
-##        sp = 0
-##        dp = 100
-##      if myMoveHistory[-2]=="THROW" and mySnowballs<10:
-##        rp = 100
-##        sp = 0
-##        dp = 0    
-##      if myMoveHistory[-2]=="DUCK" and mySnowballs>0:
-##        rp = 0
-##        sp = 100
-##        dp = 0
-##        
-##    if myMoveHistory[-1]!=myMoveHistory[-2] and myMoveHistory[-1]!=myMoveHistory[-3] and myMoveHistory[-2]!=myMoveHistory[-3]:
-##      if myMoveHistory[-3]=="RELOAD" and myDucksUsed<5:
-##        rp = 0
-##        sp = 0
-##        dp = 100
-##      if myMoveHistory[-3]=="THROW" and mySnowballs<10:
-##        rp = 100
-##        sp = 0
-##        dp = 0    
-##      if myMoveHistory[-3]=="DUCK" and mySnowballs>0:
-##        rp = 0
-##        sp = 100
-##        dp = 0
-##        
 
   move= choice(["RELOAD"]*rp+ ["THROW"]*sp +["DUCK"]*dp)
   return(move)
 
-###for x in range(3,4):
-##for y in range(1,11):
-##    for c in range(0,5):
-##        for v in range(1,3):
-##            for b in range(1,11):
-##                for n in range(0,5):
-##                    print(getMove(2, y, c, 1, v, 5, n, 1))
