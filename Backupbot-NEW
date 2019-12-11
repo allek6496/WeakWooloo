@@ -1,0 +1,228 @@
+from random import*
+
+def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore,  opponentsSnowballs,  opponentsDucksUsed,  opponentMoveHistory ):
+  move = ""
+  rp = 0
+  dp = 0
+  sp = 0
+
+#If opponents score is 0 or 1
+  if opponentsScore<=1:
+    if mySnowballs==0:
+      rp = 100
+      sp = 0
+      dp = 0
+    if 0<mySnowballs<=2:
+      rp = 90
+      sp = 10
+      dp = 0
+    if 0<mySnowballs<4:
+      rp = 70
+      sp = 30
+      dp = 0
+    
+    if mySnowballs>=4:
+      rp = 80
+      sp = 20
+      dp = 0
+    if mySnowballs==10:
+      sb = 100
+      dp = 0
+      rp = 0
+
+#If opponents score is 2
+  if opponentsScore == 2:
+
+    #If Opponent has snowballs
+    if opponentsSnowballs>0:
+    #If our bot used all ducks 
+      if myDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        else:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif myDucksUsed<=2:
+        if mySnowballs==0:
+          rp = 0
+          sp = 0
+          dp = 100
+        elif mySnowballs<=3:
+          rp = 0
+          sp = 70
+          dp = 30
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 90
+          dp = 10
+
+      elif myDucksUsed<=4:
+        if mySnowballs==0:
+          rp = 0
+          sp = 0
+          dp = 100
+        elif mySnowballs<=4:
+          rp = 0
+          sp = 80
+          dp = 20
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 100
+          dp = 0
+
+    if opponentsSnowballs==0:
+      if opponentsDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        else:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif opponentsDucksUsed<=2:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs<=4:
+          rp = 20
+          sp = 80
+          dp = 0
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif opponentsDucksUsed<=4:
+        if mySnowballs==0 and mySnowballs<10:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs<=4 and mySnowballs<10:
+          rp = 30
+          sp = 70
+          dp = 0
+        elif mySnowballs==10:
+          rp = 0
+          sp = 100
+          dp = 0
+      elif opponentsDucksUsed<=4 and myDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs>0:
+          rp = 0
+          sp = 100
+          dp = 0
+  #Detecting patterns in our own bot
+  if len(myMoveHistory)>=4 and 0<mySnowballs<10 and myDucksUsed<5 and myScore<2 and rp==100:
+    if myMoveHistory[-1]==myMoveHistory[-2] and myMoveHistory[-2]==myMoveHistory[-3]:
+      if myMoveHistory[-1]=="RELOAD" and myDucksUsed<5:
+        rp = 0
+        sp = 100
+        dp = 0
+      if myMoveHistory[-1]=="THROW" and mySnowballs<10:
+        rp = 100
+        sp = 0
+        dp = 0    
+      if myMoveHistory[-1]=="DUCK" and mySnowballs>0:
+        rp = 0
+        sp = 100
+        dp = 0
+        
+    if myMoveHistory[-2]==myMoveHistory[-4] and myMoveHistory[-1]==myMoveHistory[-3]:
+      if myMoveHistory[-2]=="RELOAD" and myDucksUsed<5:
+        rp = 0
+        sp = 100
+        dp = 0
+      if myMoveHistory[-2]=="THROW" and mySnowballs<10:
+        rp = 100
+        sp = 0
+        dp = 0    
+      if myMoveHistory[-2]=="DUCK" and mySnowballs>0:
+        rp = 0
+        sp = 100
+        dp = 0
+        
+    if myMoveHistory[-1]!=myMoveHistory[-2] and myMoveHistory[-1]!=myMoveHistory[-3] and myMoveHistory[-2]!=myMoveHistory[-3]:
+      if myMoveHistory[-3]=="RELOAD" and myDucksUsed<5:
+        rp = 0
+        sp = 100
+        dp = 0
+      if myMoveHistory[-3]=="THROW" and mySnowballs<10:
+        rp = 100
+        sp = 0
+        dp = 0    
+      if myMoveHistory[-3]=="DUCK" and mySnowballs>0:
+        rp = 0
+        sp = 100
+        dp = 0
+        
+#Detecting patterns in Other Programs
+
+  if len(myMoveHistory)>=4 and 0<mySnowballs<10 and myDucksUsed<5 and dp==100:
+    if myMoveHistory[-1]==myMoveHistory[-2] and myMoveHistory[-2]==myMoveHistory[-3]: 
+      if opponentMoveHistory[-1]==opponentMoveHistory[-2] and opponentMoveHistory[-2]==opponentMoveHistory[-3]:
+        if opponentMoveHistory[-1]=="RELOAD" and mySnowballs>0:
+          rp = 0
+          sp = 100
+          dp = 0
+        if opponentMoveHistory[-1]=="THROW" and myDucksUsed<5:
+          rp = 60
+          sp = 0
+          dp = 40    
+        if opponentMoveHistory[-1]=="DUCK" and mySnowballs<10:
+          rp = 100
+          sp = 0
+          dp = 0
+          
+      if opponentMoveHistory[-1]==opponentMoveHistory[-3]:
+        if opponentMoveHistory[-2]=="RELOAD" and mySnowballs>0:
+          rp = 0
+          sp = 100
+          dp = 0
+        if opponentMoveHistory[-2]=="THROW" and myDucksUsed<5:
+          rp = 0
+          sp = 0
+          dp = 100     
+        if opponentMoveHistory[-2]=="DUCK" and 0<mySnowballs<10 and opponentsScore<2:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif opponentMoveHistory[-2]=="DUCK" and mySnowballs<10:
+          rp = 100
+          sp = 0
+          dp = 0
+          
+      if opponentMoveHistory[-1]!=opponentMoveHistory[-2] and opponentMoveHistory[-1]!=opponentMoveHistory[-3] and opponentMoveHistory[-2]!=opponentMoveHistory[-3]:
+        if opponentMoveHistory[-3]=="RELOAD" and mySnowballs>0:
+          rp = 0
+          sp = 100
+          dp = 0
+        if opponentMoveHistory[-3]=="THROW" and myDucksUsed<5:
+          rp = 0
+          sp = 0
+          dp = 100    
+        if opponentMoveHistory[-3]=="DUCK" and mySnowballs<10:
+          rp = 100
+          sp = 0
+          dp = 0
+          
+#Checking for patterns in my own bot that other bots can detect and countering them
+  if rp==0 and sp==0 and dp==0:
+    if mySnowballs==0:
+      rp=rp+1
+    
+    elif mySnowballs>0:
+      sp=sp+1
+    elif myDucksUsed<5:
+      dp=dp
+  move= choice(["RELOAD"]*rp+ ["THROW"]*sp +["DUCK"]*dp)
+  return(move)
