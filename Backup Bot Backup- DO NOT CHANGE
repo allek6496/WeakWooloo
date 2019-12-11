@@ -1,0 +1,129 @@
+from random import*
+
+def getMove( myScore,  mySnowballs,  myDucksUsed,  myMoveHistory, opponentsScore,  opponentsSnowballs,  opponentsDucksUsed,  opponentMoveHistory ):
+  move = ""
+  rp = 0
+  dp = 0
+  sp = 0
+
+#If opponents score is 0 or 1
+  if opponentsScore<=1:
+    if mySnowballs==0:
+      rp = 100
+      sp = 0
+      dp = 0
+    if 0<mySnowballs<4:
+      rp = 80
+      sp = 20
+      dp = 0
+    
+    if mySnowballs>=4:
+      rp = 80
+      sp = 20
+      dp = 0
+    if mySnowballs==10:
+      sb = 100
+      dp = 0
+      rp = 0
+
+#If opponents score is 2
+  if opponentsScore == 2:
+
+    #If Opponent has snowballs
+    if opponentsSnowballs>0:
+    #If our bot used all ducks 
+      if myDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        else:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif myDucksUsed<=2:
+        if mySnowballs==0:
+          rp = 0
+          sp = 0
+          dp = 100
+        elif mySnowballs<=3:
+          rp = 0
+          sp = 70
+          dp = 30
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 90
+          dp = 10
+
+      elif myDucksUsed<=4:
+        if mySnowballs==0:
+          rp = 0
+          sp = 0
+          dp = 100
+        elif mySnowballs<=4:
+          rp = 0
+          sp = 80
+          dp = 20
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 100
+          dp = 0
+
+    if opponentsSnowballs==0:
+      if opponentsDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        else:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif opponentsDucksUsed<=2:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs<=4:
+          rp = 20
+          sp = 80
+          dp = 0
+        elif mySnowballs<=10:
+          rp = 0
+          sp = 100
+          dp = 0
+
+      elif opponentsDucksUsed<=4:
+        if mySnowballs==0 and mySnowballs<10:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs<=4 and mySnowballs<10:
+          rp = 30
+          sp = 70
+          dp = 0
+        elif mySnowballs==10:
+          rp = 0
+          sp = 100
+          dp = 0
+      elif opponentsDucksUsed<=4 and myDucksUsed==5:
+        if mySnowballs==0:
+          rp = 100
+          sp = 0
+          dp = 0
+        elif mySnowballs>0:
+          rp = 0
+          sp = 100
+          dp = 0
+
+
+
+  move= choice(["RELOAD"]*rp+ ["THROW"]*sp +["DUCK"]*dp)
+  return(move)
+
+
+                        
+                       
+                    
